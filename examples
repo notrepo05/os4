@@ -1,0 +1,14 @@
+printf("%d\n", hfib(10)) = 3.143760
+pi = 3.143760
+cipher@cipher-vm:~/Downloads/pa3/CU-CS3753-PA3$ sudo time -f="%E,%e,%S,%U,%P" ./tester 2 35 ./pi 100000 | tail -1
+=0:00.02,0.02,0.04,0.07,389%
+pi = 3.143760
+cipher@cipher-vm:~/Downloads/pa3/CU-CS3753-PA3$ sudo time -f="%E,%e,%S,%U,%P" ./tester 2 35 ./pi 100000 | tail -0
+=0:00.03,0.03,0.04,0.06,380%
+cipher@cipher-vm:~/Downloads/pa3/CU-CS3753-PA3$ sudo time -f="%E,%e,%S,%U,%P" ./tester 2 35 ./pi 1000000 | tail -0
+=0:00.27,0.27,0.01,1.06,388%
+cipher@cipher-vm:~/Downloads/pa3/CU-CS3753-PA3$ sudo time -f="%E,%e,%S,%U,%P" ./tester 2 35 ./pi 10000000 | tail -0
+=0:02.79,2.79,0.02,10.60,380%
+cipher@cipher-vm:~/Downloads/pa3/CU-CS3753-PA3$ sudo time -f="%E,%e,%S,%U,%P" ./tester 2 35 ./mix 10000 2 37
+=0:03.03,3.03,8.97,2.66,384%
+;
