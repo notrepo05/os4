@@ -1,9 +1,10 @@
 /*
  * File: rw.c
  * Author: Andy Sayler
+ * Author: Nick Rohn
  * Project: CSCI 3753 Programming Assignment 3
  * Create Date: 2012/03/19
- * Modify Date: 2012/03/20
+ * Modify Date: 2015/11/5
  * Description: A small i/o bound program to copy N bytes from an input
  *              file to an output file. May read the input file multiple
  *              times if N is larger than the size of the input file.
@@ -21,6 +22,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <pthread.h>
 
 /* Local Defines */
 #define MAXFILENAMELENGTH 80
@@ -29,7 +31,57 @@
 #define DEFAULT_BLOCKSIZE 1024
 #define DEFAULT_TRANSFERSIZE 1024*100
 
+
+// we use this interface to spawn threads (or simply run) the test functions 
+void test(void*);
+// this is the rw method provided by Andy Sayler. 
+void rw(int argc, char* argv[]);
+// this is the pi method provided by Andy Sayler. 
+void pi(int argc, char* argv[]);
+// mix method to test a mixed io + cpu bound program
+void mix(int argc, char* argv[]);
+
+typedef struct mArgs {
+  int argc; 
+  char **argv;
+  void (*func)();
+} margs;
+
 int main(int argc, char* argv[]){
+  margs doArgs[3];
+  int i = 0; 
+  for (; i < 3; ++i) {
+    doArgs[i].argc = argc;  
+    doArgs[i].argv = argv;
+  }
+  doArgs[0].func = &rw;
+  doArgs[1].func = &pi;
+  doArgs[2].func = &mix;
+
+  test(&doArgs[0]);
+  return 0;
+}
+
+
+void test(void *p) {
+  margs* args = (margs*)(p);
+  int argc = args->argc;
+  char *argv[argc];
+  int i = 0;
+  for (; i<argc; i++) {
+    argv[i] = args->argv[i];
+  }
+  args->func(argc, argv);
+  return;
+}
+
+void pi(int argc, char* argv[]) {
+
+}
+
+void mix(int argc, char* argv[]) {}
+
+void rw(int argc, char* argv[]){
 
     int rv;
     int inputFD;
@@ -213,5 +265,9 @@ int main(int argc, char* argv[]){
 	exit(EXIT_FAILURE);
     }
 
-    return EXIT_SUCCESS;
+    return;
 }
+
+
+
+
